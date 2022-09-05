@@ -1,2 +1,2 @@
-# vapiSecurityTests
-vapiSecurityTests with python and pytest
+# VAmPISecurityTests
+VAmPISecurityTests with python and pytest
