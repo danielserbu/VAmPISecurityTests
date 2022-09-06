@@ -6,12 +6,15 @@ VAmPISecurityTests with python and pytest
 ### This is still in development and will be updated with time.
 ### Currently tests for:
 1. Unauthorized password change https://erev0s.com/blog/vampi-vulnerable-api-security-testing/#unauthorized-password-change
-### Disclaimer:
-### Since the API is meant to be vulnerable, the tests will call it "passed" not because it is actually not vulnerable, but because it is vulnerable.
+2. SQL Injection https://erev0s.com/blog/vampi-vulnerable-api-security-testing/#sql-injection
 ### Prerequisites
 1. pip3 install -U pytest
-2. Clone VAmPI, change ENV tokentimetolive=900 in Dockerfile
-3. Docker build and then docker run
+2. Clone VAmPI
+3. Build and run a vulnerable VAmPI "docker run -d -e vulnerable=1 -e tokentimetolive=800 -p 5000:5000 vampire_docker:latest"
+4. Docker build and then docker run
+5. Build and run a non vulnerable VAmPI "docker run -d -e vulnerable=0 -e tokentimetolive=800 -p 5050:5050 vampire_docker:latest"
+6. Docker build and then docker run
+
 
 Run with: "pytest test_VAmPISecurityTests.py --verbose -s"
 
