@@ -70,7 +70,7 @@ def login_with_test_user(username=testUser, password=testUserPassword):
     myToken = login_with_user(username, password)
     global testUser_auth_token
     testUser_auth_token = myToken[1]
-    print(testUser_auth_token)
+    #print(testUser_auth_token)
 
 
 def login_with_second_test_user(username=secondTestUser, password=secondTestUserPassword):
@@ -80,7 +80,7 @@ def login_with_second_test_user(username=secondTestUser, password=secondTestUser
     myToken = login_with_user(username, password)
     global secondTestUser_auth_token
     secondTestUser_auth_token = myToken[1]
-    print(secondTestUser_auth_token)
+    #print(secondTestUser_auth_token)
 
 
 def setup_module():
@@ -162,7 +162,7 @@ def test_rate_limiting():
         Observation: not all functions are tested for rate limiting.
         Some other functions might have a rate limit.
     """
-    oneThousandUsers = list(range(1))
+    oneThousandUsers = list(range(1000))
     successFailureRate = list()
     for number in oneThousandUsers:
         output = create_new_user(str(number), str(number))
