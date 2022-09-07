@@ -94,12 +94,24 @@ def setup_module():
 def test_sql_injection(url=url + "/users/v1/' or 1=1 -- "):
     """
         Tests if getting user functionality is vulnerable to SQLi
+        Note: 1=1 technique returns first user in database.
     """
 
     request = requests.get(url)
 
     assert "name1" not in request.text
     assert "mail1@mail.com" not in request.text
+
+
+def test_error_based_sql_injection(url=url + "/users/v1/-1'"):
+    """
+        Tests if getting user functionality is vulnerable to error based SQLi
+        Note: "-1' parameter returns sqlalchemy.exc.OperationalError
+    """
+
+    request = requests.get(url)
+
+    assert "SQL: SELECT * FROM users WHERE username = '-1" not in request.text
 
 
 def test_unauthorized_password_change(url=url + "/users/v1/name1/password"):
