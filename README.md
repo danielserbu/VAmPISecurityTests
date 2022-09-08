@@ -17,13 +17,18 @@ VAmPISecurityTests with python and pytest
 ### Prerequisites
 1. pip3 install -U pytest
 2. Clone VAmPI
-3. Build and run a vulnerable VAmPI "docker run -d -e vulnerable=1 -e tokentimetolive=800 -p 5000:5000 vampire_docker:latest"
-4. Docker build and then docker run
-5. Build and run a non vulnerable VAmPI "docker run -d -e vulnerable=0 -e tokentimetolive=800 -p 5050:5050 vampire_docker:latest"
-6. Docker build and then docker run
-
+3. Do run inside the VAmPI folder "docker build -t vampi_docker:latest ." as per instructions
+4. Do run inside the VAmPI folder "docker compose up -d"
+5. This will start VAmPI on port 5002 as vulnerable and on port 5001 as secure.
+![](dockerVAmPI.png)
+6. Now do change port variable from inside test_VAmPISecurityTests.py file as wished in order to experiment.
 
 Run with: "pytest test_VAmPISecurityTests.py --verbose -s"
 
-### Demo Gif
-![](demo.gif)
+### Demo Vulnerable Gif
+### Notes: It is normal for all tests to fail.
+![](vulnerableDemo.gif)
+
+### Demo Secure Gif
+### Notes: Rate limiting and excessive data exposure seem not to be secure in this case also.
+![](secureDemo.gif)

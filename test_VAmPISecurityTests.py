@@ -2,16 +2,11 @@ import pytest
 import requests
 import json
 
-# Change port to 5050 for non vulnerable API.
-# 5000 is vulnerable
-port = 5000
+port = 5002
 
 url = "http://localhost:" + str(port) + "/"
 testUser = "testUser"
 testUserPassword = "testPassword"
-secondTestUser = "secondTestUser"
-secondTestUserPassword = "secondTestPassword"
-
 
 # Default users on the system: name1, name2, admin
 
@@ -73,20 +68,9 @@ def login_with_test_user(username=testUser, password=testUserPassword):
     #print(testUser_auth_token)
 
 
-def login_with_second_test_user(username=secondTestUser, password=secondTestUserPassword):
-    """
-        Logs in with secondary test USER. (Useful for fetching the auth_token)
-    """
-    myToken = login_with_user(username, password)
-    global secondTestUser_auth_token
-    secondTestUser_auth_token = myToken[1]
-    #print(secondTestUser_auth_token)
-
-
 def setup_module():
     create_new_db()
     create_new_user(testUser, testUserPassword)
-    create_new_user(secondTestUser, secondTestUserPassword)
 ### Setup ###
 
 
@@ -133,7 +117,7 @@ def test_unauthorized_password_change(url=url + "/users/v1/name1/password"):
                            headers={'Content-Type': contentType,
                                     'Authorization': f"Bearer {testUser_auth_token}"})
 
-    assert request.status_code is not 204
+    assert request.status_code is 204
 
     # Continue in case request.status_code was 204 (vulnerable).
     # Login with name1 user using the newly created password.
@@ -227,22 +211,21 @@ def test_mass_assignment():
         body["username"] = usernames[usernameIndex]
         usernameIndex += 1
 
-        request = requests.post(url + "users/v1/register",
-                                data=json.dumps(body),
-                                headers={'Content-Type': contentType})
+        requests.post(url + "users/v1/register",
+                            data=json.dumps(body),
+                            headers={'Content-Type': contentType})
         # Cleanup for next loop
         del body[fuzzParameter]
 
     # Check if any of the fuzzed parameters did tamper the admin value by using the _debug path
     # Otherwise it would be ideal to check directly into DB, but going this way for now.
     usersRequest = requests.get(url + "/users/v1/_debug")
-    userRequestOutputDictionary = json.loads(usersRequest.text)
-
-    vulnerable = False
+    usersRequestOutputDictionary = json.loads(usersRequest.text)
+    listOfUsers = usersRequestOutputDictionary["users"]
 
     # Check if any of the users was registered as admin.
+    vulnerable = False
     for username in usernames:
-        listOfUsers = userRequestOutputDictionary["users"]
         # Get our user's properties
         userDetails = next(item for item in listOfUsers if item["username"] == username)
         # Check if admin field is True
