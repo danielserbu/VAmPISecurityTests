@@ -27,8 +27,8 @@ Run with: "pytest test_VAmPISecurityTests.py --verbose -s"
 
 ### Demo Vulnerable Gif
 ### Notes: It is normal for all tests to fail.
-![](vulnerableDemo.gif)
+![](demoVulnerable.gif)
 
 ### Demo Secure Gif
 ### Notes: Rate limiting and excessive data exposure seem not to be secure in this case also.
-![](secureDemo.gif)
+![](demoSecure.gif)
